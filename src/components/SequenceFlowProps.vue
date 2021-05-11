@@ -87,8 +87,8 @@ import bpmnHelper from '../js/helper/BpmnHelper'
 import { is } from 'bpmn-js/lib/util/ModelUtil'
 import AdjacencyMatrixGraph from '../js/utils/AdjacencyMatrixGraph'
 import { isBlank } from '@/js/utils/CommonUtils'
-import AdapterComponent from './AdapterComponent.vue'
 import { randomUUID } from '@/utils/util'
+import {LogicOptions} from "@/js/static";
 
 const condition_columns = [
   {
@@ -119,15 +119,12 @@ const condition_columns = [
   }
 ]
 const eventDefinitionHelper = require('../js/helper/EventDefinitionHelper'),
-  isAny = require('bpmn-js/lib/features/modeling/util/ModelingUtil').isAny,
   elementHelper = require('../js/helper/ElementHelper'),
   forEach = require('lodash/forEach'),
   filter = require('lodash/filter'),
   find = require('lodash/find'),
   findIndex = require('lodash/findIndex'),
-  includes = require('lodash/includes'),
-  replace = require('lodash/replace'),
-  map = require('lodash/map')
+  includes = require('lodash/includes')
 const DEFAULT_VALUE = {
   condition: '未配置任何条件',
   logicLabel: '无'
@@ -135,7 +132,7 @@ const DEFAULT_VALUE = {
 export default {
   props: ['element'],
   inject: ['bpmnModeler'],
-  components: { AdapterComponent },
+  components: {  },
   data() {
     return {
       modeling: null,
@@ -209,7 +206,7 @@ export default {
       let conditionExpress = ''
       let conditionList = this.conditionList
       if (validateConditions(conditions)) {
-        forEach(conditions, function(condition, index) {
+        forEach(conditions, function(condition) {
           let conditionInfo = find(conditionList, { value: condition.variable })
           if (conditionInfo) {
             let conditionalVal
@@ -241,7 +238,7 @@ export default {
             conditionalEventDefinition || bo,
             bpmnFactory
           )
-          let source = this.element.source
+          // let source = this.element.source
           // 如果是默认条线，移除source的属性
           // if (source && source.businessObject.defaultflow) {
           //     bpmnHelper.updatePropertiesByCmd(source,commandStack,{ 'defaultflow': false });
@@ -313,7 +310,7 @@ export default {
         //值
         let val = conditionExpress.substring(footOptIdx + 1, conditionExpress.length).trim()
         //操作符
-        let opt = conditionExpress.substring(headOptIdx, footOptIdx + 1).trim()
+        // let opt = conditionExpress.substring(headOptIdx, footOptIdx + 1).trim()
         row.id = randomUUID()
         row.variable = variable
         row.conditionalVal = val
@@ -367,8 +364,6 @@ export default {
       }
     },
     loadCanditionList() {
-      let formKeys = ''
-      let nodeSet = []
       const bpmnModeler = this.bpmnModeler()
       const canvas = bpmnModeler.get('canvas')
       let children = canvas.getRootElement().children
@@ -394,11 +389,6 @@ export default {
         }
       })
       //获取流程图中的所有可能经历过的节点
-      let allPreNodes = ngGraph.allPredecessors(this.element.id)
-      let params_json_str = { sql_name: 'getFlowCondition' }
-      executeSQL(params_json_str).then(res => {
-        this.conditionList = res['result']
-      })
     },
     //设置组件的值
     initSubComponent(variableInfo) {
@@ -406,10 +396,8 @@ export default {
       if (variableInfo) {
         if (variableInfo.type == 'result') {
           this.form.tmp.componentType = 'select'
-          this.form.tmp.conditionalValData = wfResult
         }
         if (variableInfo.type == 'number') {
-          $scope.dataStatus.INPUT = true
           return
         }
 
@@ -446,19 +434,19 @@ export default {
           //翻译变量名称
           condition.variableLabel = conditionInfo.TEXT
           //如果条件类型为结果类型的
-          if (conditionInfo.type = 'result') {
-            //翻译条件值
-            let resultInfo = find(wfResult, { VALUE: condition.conditionalVal })
-            condition.conditionalValLabel = resultInfo.TEXT
-          }
+          // if (conditionInfo.type = 'result') {
+          //   //翻译条件值
+          //   let resultInfo = find(wfResult, { VALUE: condition.conditionalVal })
+          //   condition.conditionalValLabel = resultInfo.TEXT
+          // }
         }
-        let logicInfo = find(LogicOptions, { VALUE: condition.logic })
-        if (logicInfo) {
-          //翻译逻辑符
-          condition.logicLabel = logicInfo.TEXT
-        } else {
-          condition.logicLabel = '无'
-        }
+        // let logicInfo = find(LogicOptions, { VALUE: condition.logic })
+        // if (logicInfo) {
+        //   //翻译逻辑符
+        //   condition.logicLabel = logicInfo.TEXT
+        // } else {
+        //   condition.logicLabel = '无'
+        // }
       })
     },
     getVariableInfo(variableVal) {
@@ -471,19 +459,15 @@ export default {
       this.form.variable = '&uuuteiy'
       this.table.selectedRow = row
     },
-    handleConditionSelect(value) {
+    handleConditionSelect() {
       this.form.conditionalVal = ''
-      let params_json_str = { sql_name: 'getFlowConditionValue', condition: value }
-      executeSQL(params_json_str).then(res => {
-        this.conditionValueList = res['result']
-      })
     }
   },
   watch: {
     element: {
       deep: true,
       immediate: true,
-      handler(element, oldVal) {
+      handler(element) {
         this.name = element.businessObject.name
         //显示条件配置选项
         this.needConditiona = true
@@ -503,21 +487,21 @@ export default {
       }
     },
     name: {
-      handler(newVal, oldVal) {
+      handler(newVal) {
         this.modeling.updateProperties(this.element, {
           'name': newVal
         })
       }
     },
     condition: {
-      handler(newVal, oldVal) {
+      handler(newVal) {
         this.modeling.updateProperties(this.element, {
           'condition': newVal
         })
       }
     },
     reworkFlag: {
-      handler(newVal, oldVal){
+      handler(newVal){
         this.modeling.updateProperties(this.element, {
           'reworkFlag': newVal
         })
@@ -580,27 +564,27 @@ export default {
   }
 }
 //只有网关和活动才需要配置条件
-const CONDITIONAL_SOURCES = [
-  'bpmn:Activity',
-  'bpmn:ExclusiveGateway',
-  'bpmn:InclusiveGateway',
-  'bpmn:ComplexGateway'
-]
-function isConditionalSource(element) {
-  return isAny(element, CONDITIONAL_SOURCES)
-}
+// const CONDITIONAL_SOURCES = [
+//   'bpmn:Activity',
+//   'bpmn:ExclusiveGateway',
+//   'bpmn:InclusiveGateway',
+//   'bpmn:ComplexGateway'
+// ]
+// function isConditionalSource(element) {
+//   return isAny(element, CONDITIONAL_SOURCES)
+// }
 //判断是否需要条件配置
-function idNeedCondition(element, bo) {
-  if (!bo) {
-    return false
-  }
-  let conditionalEventDefinition = eventDefinitionHelper.getConditionalEventDefinition(element)
-  if (!(is(element, 'bpmn:SequenceFlow') && isConditionalSource(element.source))
-    && !conditionalEventDefinition) {
-    return false
-  }
-  return true
-}
+// function idNeedCondition(element, bo) {
+//   if (!bo) {
+//     return false
+//   }
+//   let conditionalEventDefinition = eventDefinitionHelper.getConditionalEventDefinition(element)
+//   if (!(is(element, 'bpmn:SequenceFlow') && isConditionalSource(element.source))
+//     && !conditionalEventDefinition) {
+//     return false
+//   }
+//   return true
+// }
 //校验表达式的正确性
 function validateConditions(conditions) {
   let flag = true

@@ -1,13 +1,15 @@
 <!--  -->
 <template>
   <a-spin tip="Loading..." :spinning="isLoading">
-    <a-row style="width: 100%; height: 960px; padding: 10px; box-sizing: border-box;"  :gutter="8">
-      <a-col :span="3" style="height: 100%; border: 1px solid #becbff; background: white">
-        <CustomHeader title="流程元素"></CustomHeader>
-        <div ref="palette"></div>
+    <a-row class="main-row" :gutter="8">
+      <a-col :span="3" style="height: 100%">
+        <div class="main-col-div">
+          <CustomHeader title="流程元素"></CustomHeader>
+          <div ref="palette"></div>
+        </div>
       </a-col>
-      <a-col :span="16">
-        <a-tabs type="card">
+      <a-col :span="16" style="height: 100%;">
+        <a-tabs type="card" class="main-col-div">
           <a-tab-pane key="designer" tab="设计">
             <div class="grid-content bg-purple" style="height: 900px">
               <div class="containers">
@@ -24,37 +26,14 @@
           </a-tab-pane>
           <a-tab-pane key="source" tab="源码">
             <div class="grid-content bg-purple" style="height: 900px">
-              <a-textarea placeholder="Basic usage" style="height: 100%" readOnly :value="sourceXml" />
+              <a-textarea placeholder="Basic usage" style="height: 100%" readOnly :value="sourceXml"/>
             </div>
           </a-tab-pane>
         </a-tabs>
       </a-col>
       <a-col :span="5" style="height: 100%">
-        <div class="grid-content bg-purple" style="margin-bottom: 10px; height: calc(25% - 10px) !important;">
-          <CustomHeader title="FlowInfo"></CustomHeader>
-          <a-form-item
-              label="流程ID"
-              style="width: 100%; margin-bottom: 6px"
-              :label-col="{span: 5}"
-              :wrapper-col="{span: 19}">
-            <a-input :disabled="true" v-model="currentFlow" />
-          </a-form-item>
-          <a-form-item
-              label="版本号"
-              style="width: 100%; margin-bottom: 6px"
-              :label-col="{span: 5}"
-              :wrapper-col="{span: 19}">
-            <a-input :disabled="true" v-model="currentFlowVersion" />
-          </a-form-item>
-          <a-form-item
-              label="CreateUser"
-              style="width: 100%; margin-bottom: 6px"
-              :label-col="{span: 5}"
-              :wrapper-col="{span: 19}">
-            <a-input :disabled="true" v-model="currentFlowCreateUser" />
-          </a-form-item>
-        </div>
-        <div class="grid-content bg-purple" style="height: 75% !important; overflow-y: auto">
+        <div class="grid-content bg-purple main-col-div">
+          <CustomHeader title="属性面板"></CustomHeader>
           <a-form label-width="auto" size="mini" label-position="top">
             <!-- 动态显示属性面板 -->
             <component :is="propsComponent" :element="element" :key="key" :version="currentFlowVersion"
@@ -68,7 +47,12 @@
 
 <script>
 import CommonProps from '@/components/CommonProps'
+import EndEventProps from "@/components/EndEventProps";
+import SequenceFlowProps from "@/components/SequenceFlowProps";
+import SqlScriptProps from "@/components/SqlScriptProps";
 import StartEventProps from "@/components/StartEventProps";
+import SubProcessProps from "@/components/SubProcessProps";
+import TaskProps from "@/components/TaskProps";
 
 import bpmnHelper from "@/js/helper/BpmnHelper";
 import CustomHeader from "@/components/tools/CustomHeader";
@@ -82,10 +66,15 @@ export default {
   components: {
     CustomHeader,
     CommonProps,
-    StartEventProps
+    StartEventProps,
+    TaskProps,
+    EndEventProps,
+    SqlScriptProps,
+    SubProcessProps,
+    SequenceFlowProps
   },
   props: ['params'],
-  provide: function() {
+  provide: function () {
     return {
       bpmnModeler: this.getBpmnModeler,
       params: this.params
@@ -96,6 +85,7 @@ export default {
       propsComponent: 'CommonProps',
       bpmData: new BpmData(),
       isLoading: false,
+      element: null,
       sourceXml: '',
       currentFlow: '',
       currentFlowVersion: '',
@@ -132,7 +122,7 @@ export default {
         etl: etlExtension
       },
       additionalModules: [
-        { labelEditingProvider: ['value', ''] }
+        {labelEditingProvider: ['value', '']}
       ]
     })
 
@@ -147,7 +137,7 @@ export default {
       // 将字符串转换成图显示出来
       try {
         const result = this.bpmnModeler.importXML(bpmnXmlStr)
-        const { warnings } = result
+        const {warnings} = result
         console.log(warnings)
         this.addModelerListener()
         this.addEventBusListener()
@@ -163,7 +153,7 @@ export default {
       const that = this
       // 'shape.removed', 'connect.end', 'connect.move'
       const events = ['shape.added', 'shape.move.end', 'shape.removed']
-      events.forEach(function(event) {
+      events.forEach(function (event) {
         that.bpmnModeler.on(event, (e) => {
           const elementRegistry = bpmnjs.get('elementRegistry')
           const shape = e.element ? elementRegistry.get(e.element.id) : e.shape
@@ -192,8 +182,8 @@ export default {
       let that = this
       const eventBus = this.bpmnModeler.get('eventBus')
       const eventTypes = ['element.click', 'element.changed', 'selection.changed']
-      eventTypes.forEach(function(eventType) {
-        eventBus.on(eventType, function(e) {
+      eventTypes.forEach(function (eventType) {
+        eventBus.on(eventType, function (e) {
           if (eventType === 'element.changed') {
             that.elementChanged(e)
           } else if (eventType === 'element.click' && e.element.type !== 'label') {
@@ -244,11 +234,11 @@ export default {
     },
     setDefaultProperties() {
       const that = this
-      const { element } = that
+      const {element} = that
       if (element) {
         // 这里可以拿到当前点击的节点的所有属性
-        const { type, businessObject } = element
-        const { name } = businessObject
+        const {type, businessObject} = element
+        const {name} = businessObject
         if (that.verifyIsEvent(type)) {
           const eventType = businessObject.eventDefinitions ? businessObject.eventDefinitions[0]['$type'] : ''
           console.log(eventType)
@@ -273,4 +263,19 @@ export default {
 @import '../../node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css';
 @import '../../node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
 @import "~@/style/bpmn.less";
+
+.main-row {
+  width: 100%;
+  height: 960px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.main-col-div {
+  height: 100%;
+  border: 1px solid #929292;
+  border-radius: 6px;
+  background: white;
+  padding: 5px
+}
 </style>

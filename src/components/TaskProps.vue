@@ -15,8 +15,6 @@
   </div>
 </template>
 <script>
-const forEach = require('lodash/forEach')
-
 // 用户任务属性组件
 export default {
   props: ['element', 'version', 'process_flow_name'],

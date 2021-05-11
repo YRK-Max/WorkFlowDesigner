@@ -9,7 +9,6 @@
   </div>
 </template>
 <script>
-import bpmnHelper from '../js/helper/BpmnHelper'
 export default {
   props: ['element'],
   inject: ['bpmnModeler'],
@@ -23,14 +22,14 @@ export default {
   },
 
   watch: {
-    id: function (newVal, oldVal) {
+    id: function (newVal) {
       const bpmnModeler = this.bpmnModeler()
       const modeling = bpmnModeler.get('modeling')
       modeling.updateProperties(this.element, {
         id: newVal,
       })
     },
-    name: function (newVal, oldVal) {
+    name: function (newVal) {
       const bpmnModeler = this.bpmnModeler()
       const modeling = bpmnModeler.get('modeling')
       modeling.updateProperties(this.element, {

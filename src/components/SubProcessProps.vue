@@ -77,7 +77,7 @@ export default {
         modeling.updateProperties(this.element, { id: newVal })
       }
     },
-    name(newVal, oldVal) {
+    name(newVal) {
       const bpmnModeler = this.bpmnModeler()
       const modeling = bpmnModeler.get('modeling')
       modeling.updateProperties(this.element, { name: newVal })
@@ -86,7 +86,7 @@ export default {
     element: {
       deep: true,
       immediate: true,
-      handler(newVal, oldVal) {
+      handler(newVal) {
         if (newVal) {
           const bpmnModeler = this.bpmnModeler()
           this.id = newVal.businessObject.get('id')
@@ -99,12 +99,12 @@ export default {
         }
       }
     },
-    eventType(newVal, oldVal) {
+    eventType(newVal) {
       if (newVal) {
         this.isShow = true
       }
     },
-    listenerType(newVal, oldVal) {
+    listenerType(newVal) {
       if (newVal === 'class') {
         this.listenerValueLabel = 'java类'
       } else if (newVal === 'expression') {
@@ -113,7 +113,7 @@ export default {
         this.listenerValueLabel = '代理表达式'
       }
     },
-    listenerValue(newVal, oldVal) {
+    listenerValue(newVal) {
       if (newVal) {
         const bpmnModeler = this.bpmnModeler()
         const bpmnFactory = bpmnModeler.get('bpmnFactory')
