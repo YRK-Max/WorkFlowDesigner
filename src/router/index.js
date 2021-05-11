@@ -1,18 +1,21 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import WorkFlowSpace from "@/views/WorkFlowSpace";
+import {createWebHashHistory, createRouter} from 'vue-router'
+import WorkFlowSpace from "../views/WorkFlowSpace";
 
-let constantRouterMap = [
-    {
-        path: '/',
-        name: '/',
-        component: WorkFlowSpace,
-    }
+const routerHashHis = createWebHashHistory()
+
+let routes = [
+    { path: '/', name: '/', component: WorkFlowSpace }
 ]
 
-Vue.use(Router)
-
-export default new Router({
-    mode: 'hash',
-    routes: constantRouterMap
+const router = createRouter({
+    history: routerHashHis,
+    routes: routes
 })
+
+// 路由守卫
+router.beforeEach((to, from, next) => {
+    console.log(to);
+    next();
+});
+
+export default router
