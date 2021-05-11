@@ -1,0 +1,47 @@
+{
+  "name": "custom",
+  "uri": "http://custom.org/bpmn",
+  "prefix": "custom",
+  "xml": {
+    "tagAlias": "lowerCase"
+  },
+  "associations": [],
+  "types": [
+    {
+      "name": "JavaScript",
+      "superClass": ["bpmn:ScriptTask"],
+      "properties": []
+    },
+    {
+      "name": "SqlScript",
+      "superClass": ["bpmn:ScriptTask"],
+      "properties": []
+    },
+    {
+      "name": "Message",
+      "superClass": ["bpmn:ScriptTask"],
+      "properties": []
+    },
+    {
+      "name": "Join",
+      "superClass": ["bpmn:ScriptTask"],
+      "properties": []
+    },
+    {
+      "name": "Switch",
+      "superClass": ["bpmn:ScriptTask"],
+      "properties": []
+    },
+    {
+      "name": "Sort",
+      "superClass": ["bpmn:ScriptTask"],
+      "properties": []
+    },
+    {
+      "name": "Filter",
+      "superClass": ["bpmn:ScriptTask"],
+      "properties": []
+    }
+  ],
+  "emumerations": []
+}

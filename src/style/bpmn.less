@@ -1,0 +1,415 @@
+// minimap 的样式
+
+@lineColorNormal: #9e9e9e;
+@lineColorActive: #2196f3;
+
+// 网格背景
+.djs-container {
+  background-image: linear-gradient(90deg,
+  rgba(200, 200, 200, 0.15) 10%,
+  rgba(0, 0, 0, 0) 10%),
+  linear-gradient(rgba(200, 200, 200, 0.15) 10%, rgba(0, 0, 0, 0) 10%);
+  background-size: 10px 10px;
+}
+
+.djs-container {
+  --bendpoint-fill-color: #ffeb3b;
+  --bendpoint-stroke-color: #ffeb3b;
+}
+
+// hover 虚线
+.djs-element.hover .djs-outline {
+  stroke: #ff4d4d;
+  stroke-width: 1px;
+}
+
+// 左侧工具栏位置
+.custom-palette {
+  z-index: 10;
+  box-sizing: border-box;
+  overflow: auto;
+  height: calc(100% - 30px);
+  background: #fff;
+
+  .groupLabel {
+    width: 100%;
+    height: 30px;
+    background-color: #ffffff;
+    cursor: pointer;
+    border-bottom: 1px solid #989898;
+
+    span {
+      display: inline-block;
+      width: calc(100% - 60px);
+      line-height: 30px;
+      overflow: hidden;
+      text-align: left;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    i {
+      vertical-align: super;
+    }
+  }
+
+  // 所有元素
+  .entry {
+    float: none;
+    margin: 0 5px;
+    width: calc(100% - 30px);
+    height: 30px;
+    line-height: 30px;
+    box-sizing: border-box;
+    cursor: pointer;
+    padding-left: 32px;
+    display: block;
+
+    &.inShape {
+      border: 2px solid #36bbf6;
+      background-color: #72d3ff;
+    }
+
+    &.customShape {
+      border: 2px solid #4483ec;
+      background-color: #a2c5fd;
+    }
+  }
+
+  // 开始事件
+  .custom-icon-start-event-none {
+    border: 2px solid #1cc315;
+    background-color: #45e25c;
+    border-radius: 50%;
+  }
+
+  // 结束事件
+  .custom-icon-end-event-none {
+    border: 2px solid #de2626;
+    background-color: #ff7373;
+    border-radius: 50%;
+  }
+
+  // 任务 Task
+  .custom-icon-task {
+    border-radius: 10px;
+    width: 60px;
+    height: 40px;
+  }
+
+  // 网关
+  .custom-icon-gateway-none {
+    width: 36px;
+    height: 36px;
+    transform: rotate(45deg);
+  }
+
+  // 数据对象
+  .custom-icon-data-object {
+    height: 60px;
+    width: 40px;
+  }
+
+  .custom-JavaScript {
+    border-radius: 10px;
+    width: 70px;
+    height: 40px;
+  }
+}
+
+.containers {
+  width: 100%;
+  height: 100%;
+
+  .canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  .bjs-powered-by {
+    display: none;
+  }
+}
+
+.bpmn-icon-task.red {
+  color: #cc0000 !important;
+}
+
+.bpmn-icon-task.yellow {
+  color: #ffc800 !important;
+}
+
+.bpmn-icon-task.green {
+  color: #52b415 !important;
+}
+
+.el-row {
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.el-col {
+  border-radius: 4px;
+}
+
+.bg-purple-dark {
+  background: #99a9bf;
+}
+
+.bg-purple {
+  background: #ffffff;
+}
+
+.bg-purple-light {
+  background: #e5e9f2;
+}
+
+.bg-purple {
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
+}
+
+.elbutton {
+  position: relative;
+  bottom: 60px;
+  left: 20px;
+}
+
+.elb-div {
+  position: relative;
+  bottom: 25px;
+  left: 220px;
+}
+
+.elb-div a {
+  margin: 10px;
+}
+
+.bpmn-icon-task-custom {
+  margin: 16px;
+}
+
+.main-flow-div {
+  width: 100%;
+  background: #f0f2f5;
+  z-index: 101;
+}
+
+.bjs-powered-by {
+  display: none;
+}
+
+#bpmn-view-canvas {
+  width: 100%;
+  height: 430px;
+  background: #f5f5f5;
+  border-radius: 6px;
+}
+
+.bpmn-icon-task.red {
+  color: #cc0000 !important;
+}
+
+.icon-custom {
+  background-size: 22px;
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+.icon-custom.operation-task {
+  position: relative;
+  /* background-image: url('https://hexo-blog-1256114407.cos.ap-shenzhen-fsi.myqcloud.com/rules.png'); */
+  background-image: url('~../assets/selectDB.svg');
+}
+
+.icon-custom.operation-task::after {
+  font-size: 12px;
+  position: absolute;
+  top: 17px;
+  left: 0;
+}
+
+.icon-custom.icon-custom-start {
+  background-image: url('~../assets/start.png');
+}
+
+.icon-custom.icon-custom-end {
+  background-image: url('~../assets/end.png');
+}
+
+.icon-custom.flow-subprocess {
+  position: relative;
+  background-image: url('~../assets/editDB.svg');
+}
+
+.icon-custom-delete {
+  background-image: url('~../assets/delete.png');
+}
+
+.icon-custom-java-script {
+  background-image: url('~../assets/java-script.svg');
+}
+
+.icon-custom-sql-script {
+  background-image: url('~../assets/sql-script.svg');
+}
+
+.icon-custom-message {
+  background-image: url('~../assets/message.svg');
+}
+
+.icon-custom-join {
+  background-image: url('~../assets/join.svg');
+}
+
+.icon-custom-switch {
+  background-image: url('~../assets/switch.svg');
+}
+
+.icon-custom-sort {
+  background-image: url('~../assets/sort.svg');
+}
+
+.icon-custom-filter {
+  background-image: url('~../assets/filter.svg');
+}
+
+
+/* label标签 */
+
+
+/* .djs-direct-editing-parent {
+    top: 130px!important;
+    width: 60px!important;
+} */
+
+
+/* 自定义 contextPad 的样式 */
+
+.djs-context-pad .operation-task.entry:hover {
+  background: url('~../assets/selectDB.svg') center no-repeat !important;
+  background-size: cover !important;
+}
+
+.djs-context-pad .flow-subprocess.entry:hover {
+  background: url('~../assets/editDB.svg') center no-repeat !important;
+  background-size: cover !important;
+}
+
+.djs-context-pad .icon-custom-start.entry:hover {
+  background: url('~../assets/start.png') center no-repeat !important;
+  background-size: cover !important;
+}
+
+.djs-context-pad .icon-custom-end.entry:hover {
+  background: url('~../assets/end.png') center no-repeat !important;
+  background-size: cover !important;
+}
+
+.djs-context-pad .icon-custom-delete.entry:hover {
+  background: url('~../assets/delete.png') center no-repeat !important;
+  background-size: cover !important;
+}
+
+.djs-context-pad .icon-custom-java-script.entry:hover {
+  background: url('~../assets/java-script.svg') center no-repeat !important;
+  background-size: cover !important;
+}
+
+.djs-context-pad .icon-custom-sql-script.entry:hover {
+  background: url('~../assets/sql-script.svg') center no-repeat !important;
+  background-size: cover !important;
+}
+
+.djs-context-pad .icon-custom-message.entry:hover {
+  background: url('~../assets/message.svg') center no-repeat !important;
+  background-size: cover !important;
+}
+
+.djs-context-pad .icon-custom-join.entry:hover {
+  background: url('~../assets/join.svg') center no-repeat !important;
+  background-size: cover !important;
+}
+
+.djs-context-pad .icon-custom-switch.entry:hover {
+  background: url('~../assets/switch.svg') center no-repeat !important;
+  background-size: cover !important;
+}
+
+.djs-context-pad .icon-custom-sort.entry:hover {
+  background: url('~../assets/sort.svg') center no-repeat !important;
+  background-size: cover !important;
+}
+
+.djs-context-pad .icon-custom-filter.entry:hover {
+  background: url('~../assets/filter.svg') center no-repeat !important;
+  background-size: cover !important;
+}
+
+.djs-context-pad .entry:hover {
+  border: 1px solid #1890ff;
+}
+
+.djs-context-pad .entry {
+  box-sizing: border-box;
+  background-size: 94%;
+  transition: all 0.3s;
+  box-sizing: border-box;
+}
+
+.green-text-annotation.bpmn-icon-text-annotation {
+  color: green;
+}
+
+.el-icon-arrow-down {
+  background: url('~../assets/up_arrow.png') no-repeat 0 0;
+  background-size: contain;
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+
+.el-icon-arrow-up {
+  background: url('~../assets/down_arrow.png') no-repeat 0 0;
+  background-size: contain;
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+
+.img-div{
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  float: right;
+  padding: 5px;
+}
+
+.folder-div{
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  float: left;
+  padding: 5px;
+}
+
+.img-folder{
+  background: url('~../assets/folder.png') no-repeat 0 0;
+  background-size: contain;
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+
+.ant-tabs-bar{
+  margin: 0 !important;
+}
